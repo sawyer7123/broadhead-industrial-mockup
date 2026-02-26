@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { Shield, Truck, Phone, Wrench, ChevronRight, CheckCircle2, Clock, Zap, Target, UploadCloud, Send } from 'lucide-react';
+import { Shield, Truck, Phone, Wrench, ChevronRight, CheckCircle2, Clock, Zap, Target, Upload, Send, Camera } from 'lucide-react';
 import { motion, useScroll, useTransform, useInView, animate } from 'motion/react';
 
 const heavyTransition = { duration: 0.8, ease: [0.16, 1, 0.3, 1] };
@@ -82,6 +82,8 @@ function HeroSection() {
 
 function FastTrackForm() {
     const [formData, setFormData] = useState({ name: '', phone: '', description: '' });
+    const [photo, setPhoto] = useState(null);
+    const [photoName, setPhotoName] = useState('');
     const [status, setStatus] = useState('idle'); // idle | sending | success | error
 
     const handleSubmit = async (e) => {
@@ -153,7 +155,7 @@ function FastTrackForm() {
                                     placeholder="E.g., Cracked boom on CAT 349. Located at Site C, Mildred Lake..."></textarea>
                             </div>
                             <motion.button whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} type="submit" disabled={status === 'sending'}
-                                className="w-full py-5 font-black text-charcoal-950 bg-hivis-500 hover:bg-hivis-400 transition-colors text-xl uppercase tracking-wide flex items-center justify-center gap-2 rounded disabled:opacity-60">
+                                className="w-full py-5 font-black text-charcoal-950 bg-hivis-500 hover:bg-hivis-400 transition-colors text-xl uppercase tracking-wide rounded disabled:opacity-60">
                                 <Target className="w-6 h-6" />
                                 {status === 'sending' ? 'Sending...' : 'Submit for Immediate Review'}
                             </motion.button>
