@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'motion/react';
-import { Zap, Truck, Target, ChevronRight, CheckCircle2 } from 'lucide-react';
+import { Zap, Truck, ChevronRight, CheckCircle2 } from 'lucide-react';
 
 const heavyTransition = { duration: 0.8, ease: [0.16, 1, 0.3, 1] };
 
@@ -11,7 +11,7 @@ const services = [
         icon: Zap,
         title: 'Rig Welding',
         subtitle: 'Mobile & On-Site',
-        desc: 'Rig welding services allow Broadhead to complete work in even the most remote locations. From plant repairs to structural steel fabrication and production services; we have the ability to provide top-quality products with industry leading service.',
+        desc: 'Our rig welding services put fully equipped trucks at your site — no matter how remote. From emergency plant repairs to structural steel fabrication and B-Pressure pipe work, we deliver CWB-certified quality under pressure, on deadline.',
         features: ['CWB Certified Structural Welding', 'B-Pressure Pipe Welding', 'Structural Steel Fabrication', 'Remote & Plant Site Service', 'Multi-Process Welding Capability', 'Emergency Breakdown Repairs'],
         image: '/images/service-welding.webp'
     },
@@ -20,18 +20,9 @@ const services = [
         icon: Truck,
         title: 'Heavy Equipment Repair',
         subtitle: 'Minimize Downtime',
-        desc: 'Our heavy equipment repair services are designed to improve response time and minimize equipment downtime. Broadhead has the capacity and experience to provide your company with comprehensive support when you need it most.',
+        desc: "A machine sitting down is revenue walking out the door. Broadhead's heavy equipment repair crews are built for rapid response — on-site fast, working faster. From excavator boom cracks to full bucket relines, we get your iron moving again.",
         features: ['Excavator & Loader Repairs', 'Bucket Relines & Hardfacing', 'Frame Crack Repairs', 'Hydraulic System Service', 'Undercarriage Maintenance', 'Preventive Maintenance Programs'],
         image: '/images/service-equipment.webp'
-    },
-    {
-        id: 'innovative-solutions',
-        icon: Target,
-        title: 'Innovative Solutions',
-        subtitle: 'Beyond Welding',
-        desc: 'While welding and heavy industrial services are our foundation, we recognized the need to diversify into innovative solutions. Broadhead also offers installation and maintenance services for digital technology solutions.',
-        features: ['Digital Tech Installations', 'IoT Sensor Deployment', 'Equipment Monitoring Systems', 'Custom Fabrication Projects', 'Technical Consulting', 'Turnkey Project Management'],
-        image: '/images/service-innovative.png'
     }
 ];
 
@@ -54,7 +45,7 @@ export default function ServicesPage() {
                             Our <span className="text-steel-400">Services.</span>
                         </h1>
                         <p className="text-xl text-zinc-400 mt-6 max-w-2xl font-medium">
-                            Whether you need support with equipment repair or rig welding services – Broadhead Industrial is your solution.
+                            Two things, done better than anyone else in Northern Alberta. Rig welding and heavy equipment repair — that's the whole story.
                         </p>
                     </motion.div>
                 </div>
@@ -68,65 +59,51 @@ export default function ServicesPage() {
                     className={`py-24 ${idx % 2 === 0 ? 'bg-charcoal-950' : 'bg-charcoal-900'} border-b border-charcoal-800`}
                 >
                     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                        <div className={`grid grid-cols-1 lg:grid-cols-2 gap-16 items-center ${idx % 2 !== 0 ? 'lg:direction-rtl' : ''}`}>
+                        <div className={`grid grid-cols-1 lg:grid-cols-2 gap-16 items-center ${idx % 2 !== 0 ? 'lg:grid-flow-dense' : ''}`}>
                             <motion.div
                                 initial={{ opacity: 0, x: idx % 2 === 0 ? -40 : 40 }}
                                 whileInView={{ opacity: 1, x: 0 }}
                                 viewport={{ once: true }}
                                 transition={heavyTransition}
-                                className={idx % 2 !== 0 ? 'lg:order-2' : ''}
+                                className={idx % 2 !== 0 ? 'lg:col-start-2' : ''}
                             >
-                                <div className="flex items-center gap-4 mb-6">
-                                    <service.icon className="w-12 h-12 text-hivis-500" />
-                                    <div>
-                                        <div className="text-xs font-bold text-hivis-500 uppercase tracking-widest">{service.subtitle}</div>
-                                        <h3 className="text-3xl md:text-4xl font-display font-black text-white uppercase tracking-tighter">{service.title}</h3>
-                                    </div>
+                                <div className="flex items-center gap-3 mb-6">
+                                    <service.icon className="w-10 h-10 text-hivis-500" />
+                                    <span className="text-xs font-bold text-zinc-500 uppercase tracking-[0.2em]">{service.subtitle}</span>
                                 </div>
-                                <p className="text-zinc-400 font-medium leading-relaxed mb-8">{service.desc}</p>
-                                <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                <h2 className="text-4xl md:text-5xl font-display font-black text-white uppercase tracking-tighter mb-6">
+                                    {service.title}
+                                </h2>
+                                <p className="text-zinc-400 font-medium leading-relaxed mb-8 text-lg">{service.desc}</p>
+                                <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-8">
                                     {service.features.map((f, i) => (
-                                        <li key={i} className="flex items-center gap-2 text-zinc-300 font-medium text-sm">
-                                            <CheckCircle2 className="w-5 h-5 text-hivis-500 flex-shrink-0" /> {f}
+                                        <li key={i} className="flex items-center gap-2 text-zinc-300 font-medium">
+                                            <CheckCircle2 className="w-5 h-5 text-hivis-500 flex-shrink-0" />
+                                            {f}
                                         </li>
                                     ))}
                                 </ul>
-                                <Link
-                                    to="/contact"
-                                    className="inline-flex items-center gap-2 mt-8 px-6 py-3 bg-hivis-500 text-charcoal-950 font-black uppercase tracking-wide rounded hover:bg-hivis-400 transition-colors"
-                                >
-                                    Get a Quote <ChevronRight className="w-5 h-5" />
+                                <Link to="/contact"
+                                    className="inline-flex items-center gap-2 px-6 py-3 font-black text-charcoal-950 bg-hivis-500 rounded hover:bg-hivis-400 transition-colors uppercase tracking-wide text-sm">
+                                    Request This Service <ChevronRight className="w-4 h-4" />
                                 </Link>
                             </motion.div>
-
                             <motion.div
                                 initial={{ opacity: 0, x: idx % 2 === 0 ? 40 : -40 }}
                                 whileInView={{ opacity: 1, x: 0 }}
                                 viewport={{ once: true }}
                                 transition={heavyTransition}
-                                whileHover={{ y: -5, scale: 1.01 }}
-                                className={`relative h-[400px] lg:h-[500px] overflow-hidden border border-charcoal-700 rounded shadow-2xl group cursor-pointer ${idx % 2 !== 0 ? 'lg:order-1' : ''}`}
+                                className={idx % 2 !== 0 ? 'lg:col-start-1 lg:row-start-1' : ''}
                             >
-                                <img src={service.image} alt={service.title} className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" referrerPolicy="no-referrer" />
-                                <div className="absolute inset-0 bg-gradient-to-t from-charcoal-950/80 to-transparent"></div>
+                                <div className="relative h-[450px] overflow-hidden rounded border border-charcoal-700 shadow-2xl">
+                                    <img src={service.image} alt={service.title} className="w-full h-full object-cover" />
+                                    <div className="absolute inset-0 bg-gradient-to-t from-charcoal-950/60 to-transparent"></div>
+                                </div>
                             </motion.div>
                         </div>
                     </div>
                 </section>
             ))}
-
-            {/* CTA */}
-            <section className="py-24 bg-charcoal-950 text-center">
-                <motion.div initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={heavyTransition} className="max-w-3xl mx-auto px-4">
-                    <h3 className="text-4xl font-display font-black text-white uppercase tracking-tighter mb-6">
-                        Ready to <span className="text-hivis-500">Get Started?</span>
-                    </h3>
-                    <p className="text-zinc-400 font-medium mb-8 text-lg">Connect with our team for a free consultation and quote on your next project.</p>
-                    <Link to="/contact" className="inline-flex items-center gap-2 px-8 py-5 bg-hivis-500 text-charcoal-950 font-black uppercase tracking-wide text-xl rounded hover:bg-hivis-400 transition-colors shadow-[0_0_30px_rgba(234,179,8,0.3)]">
-                        Connect With Us <ChevronRight className="w-6 h-6" />
-                    </Link>
-                </motion.div>
-            </section>
         </div>
     );
 }
