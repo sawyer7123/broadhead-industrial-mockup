@@ -124,26 +124,26 @@ export default function ContactPage() {
                                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                             <div>
                                                 <label className="block text-xs font-bold text-zinc-500 uppercase tracking-widest mb-2">Name</label>
-                                                <input required type="text" value={formData.name} onChange={set('name')} className="w-full bg-charcoal-950 border border-charcoal-800 text-white px-4 py-3 rounded focus:outline-none focus:border-hivis-500 transition-colors" placeholder="Your name" />
+                                                <input required type="text" value={formData.name} onChange={set('name')} className="w-full bg-charcoal-950 border border-charcoal-800 text-white text-base px-4 py-3 rounded focus:outline-none focus:border-hivis-500 transition-colors" placeholder="Your name" />
                                             </div>
                                             <div>
                                                 <label className="block text-xs font-bold text-zinc-500 uppercase tracking-widest mb-2">Company</label>
-                                                <input type="text" value={formData.company} onChange={set('company')} className="w-full bg-charcoal-950 border border-charcoal-800 text-white px-4 py-3 rounded focus:outline-none focus:border-hivis-500 transition-colors" placeholder="Your company" />
+                                                <input type="text" value={formData.company} onChange={set('company')} className="w-full bg-charcoal-950 border border-charcoal-800 text-white text-base px-4 py-3 rounded focus:outline-none focus:border-hivis-500 transition-colors" placeholder="Your company" />
                                             </div>
                                         </div>
                                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                             <div>
                                                 <label className="block text-xs font-bold text-zinc-500 uppercase tracking-widest mb-2">Email</label>
-                                                <input required type="email" value={formData.email} onChange={set('email')} className="w-full bg-charcoal-950 border border-charcoal-800 text-white px-4 py-3 rounded focus:outline-none focus:border-hivis-500 transition-colors" placeholder="email@company.com" />
+                                                <input required type="email" value={formData.email} onChange={set('email')} className="w-full bg-charcoal-950 border border-charcoal-800 text-white text-base px-4 py-3 rounded focus:outline-none focus:border-hivis-500 transition-colors" placeholder="email@company.com" />
                                             </div>
                                             <div>
                                                 <label className="block text-xs font-bold text-zinc-500 uppercase tracking-widest mb-2">Phone</label>
-                                                <input type="tel" value={formData.phone} onChange={set('phone')} className="w-full bg-charcoal-950 border border-charcoal-800 text-white px-4 py-3 rounded focus:outline-none focus:border-hivis-500 transition-colors" placeholder="(780) 555-1234" />
+                                                <input type="tel" value={formData.phone} onChange={set('phone')} className="w-full bg-charcoal-950 border border-charcoal-800 text-white text-base px-4 py-3 rounded focus:outline-none focus:border-hivis-500 transition-colors" placeholder="(780) 555-1234" />
                                             </div>
                                         </div>
                                         <div>
                                             <label className="block text-xs font-bold text-zinc-500 uppercase tracking-widest mb-2">Service Needed</label>
-                                            <select value={formData.service} onChange={set('service')} className="w-full bg-charcoal-950 border border-charcoal-800 text-white px-4 py-3 rounded focus:outline-none focus:border-hivis-500 transition-colors">
+                                            <select value={formData.service} onChange={set('service')} className="w-full bg-charcoal-950 border border-charcoal-800 text-white text-base px-4 py-3 rounded focus:outline-none focus:border-hivis-500 transition-colors">
                                                 <option>Rig Welding</option>
                                                 <option>Heavy Equipment Repair</option>
                                                 <option>Emergency Dispatch</option>
@@ -152,7 +152,7 @@ export default function ContactPage() {
                                         </div>
                                         <div>
                                             <label className="block text-xs font-bold text-zinc-500 uppercase tracking-widest mb-2">Message</label>
-                                            <textarea required rows={5} value={formData.message} onChange={set('message')} className="w-full bg-charcoal-950 border border-charcoal-800 text-white px-4 py-3 rounded focus:outline-none focus:border-hivis-500 transition-colors" placeholder="Describe your project, breakdown, or what you need from us..."></textarea>
+                                            <textarea required rows={5} value={formData.message} onChange={set('message')} className="w-full bg-charcoal-950 border border-charcoal-800 text-white text-base px-4 py-3 rounded focus:outline-none focus:border-hivis-500 transition-colors" placeholder="Describe your project, breakdown, or what you need from us..."></textarea>
                                         </div>
                                         <motion.button
                                             whileHover={{ scale: 1.02 }}
