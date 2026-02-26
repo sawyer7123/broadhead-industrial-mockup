@@ -5,7 +5,7 @@ import { Wrench, Phone, MapPin, ChevronRight, Mail } from 'lucide-react';
 export default function Footer() {
     return (
         <>
-            <footer className="bg-charcoal-950 py-16 border-t border-charcoal-800">
+            <footer className="bg-charcoal-950 py-16 pb-24 md:pb-16 border-t border-charcoal-800">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
                         <div className="col-span-1 md:col-span-2">
