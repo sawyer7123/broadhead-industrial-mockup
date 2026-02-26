@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { Shield, Truck, Phone, Wrench, ChevronRight, CheckCircle2, Clock, Zap, Target, Upload, Send, Camera } from 'lucide-react';
+import { Shield, Truck, Phone, Wrench, ChevronRight, CheckCircle2, Clock, Zap, Target, Send, Camera } from 'lucide-react';
 import { motion, useScroll, useTransform, useInView, animate } from 'motion/react';
 
 const heavyTransition = { duration: 0.8, ease: [0.16, 1, 0.3, 1] };
@@ -82,9 +82,8 @@ function HeroSection() {
 
 function FastTrackForm() {
     const [formData, setFormData] = useState({ name: '', phone: '', description: '' });
-    const [photo, setPhoto] = useState(null);
     const [photoName, setPhotoName] = useState('');
-    const [status, setStatus] = useState('idle'); // idle | sending | success | error
+    const [status, setStatus] = useState('idle');
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -108,6 +107,7 @@ function FastTrackForm() {
             if (res.ok) {
                 setStatus('success');
                 setFormData({ name: '', phone: '', description: '' });
+                setPhotoName('');
             } else {
                 setStatus('error');
             }
@@ -154,10 +154,42 @@ function FastTrackForm() {
                                     className="w-full bg-charcoal-900 border border-charcoal-800 text-white text-base px-4 py-3 rounded focus:outline-none focus:border-hivis-500 transition-colors"
                                     placeholder="E.g., Cracked boom on CAT 349. Located at Site C, Mildred Lake..."></textarea>
                             </div>
+
+                            {/* Photo upload */}
+                            <div>
+                                <label className="block text-xs font-bold text-zinc-500 uppercase tracking-widest mb-2">Photo of Damage <span className="text-zinc-600 normal-case font-medium">(optional — helps us assess faster)</span></label>
+                                <label className="flex flex-col items-center justify-center border-2 border-dashed border-charcoal-700 hover:border-hivis-500 bg-charcoal-900/50 p-6 text-center cursor-pointer transition-colors rounded group">
+                                    <input
+                                        type="file"
+                                        accept="image/*"
+                                        capture="environment"
+                                        className="hidden"
+                                        onChange={e => {
+                                            const file = e.target.files[0];
+                                            if (file) setPhotoName(file.name);
+                                        }}
+                                    />
+                                    {photoName ? (
+                                        <div className="flex items-center gap-2 text-hivis-500 font-bold">
+                                            <CheckCircle2 className="w-5 h-5 flex-shrink-0" />
+                                            <span className="text-sm truncate max-w-[220px]">{photoName}</span>
+                                        </div>
+                                    ) : (
+                                        <>
+                                            <Camera className="w-8 h-8 text-zinc-500 mb-2 group-hover:text-hivis-500 transition-colors" />
+                                            <p className="text-zinc-300 font-bold text-sm mb-1">Tap to snap or upload a photo</p>
+                                            <p className="text-zinc-600 text-xs">JPG, PNG, HEIC accepted</p>
+                                        </>
+                                    )}
+                                </label>
+                            </div>
+
                             <motion.button whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} type="submit" disabled={status === 'sending'}
                                 className="w-full py-5 font-black text-charcoal-950 bg-hivis-500 hover:bg-hivis-400 transition-colors text-xl uppercase tracking-wide rounded disabled:opacity-60">
-                                <Target className="w-6 h-6" />
-                                {status === 'sending' ? 'Sending...' : 'Submit for Immediate Review'}
+                                <span className="flex items-center justify-center gap-3">
+                                    <Target className="w-6 h-6 flex-shrink-0" />
+                                    <span>{status === 'sending' ? 'Sending...' : 'Submit for Immediate Review'}</span>
+                                </span>
                             </motion.button>
                             {status === 'error' && (
                                 <p className="text-center text-red-400 font-medium text-sm">Something went wrong. Call us directly at <a href="tel:7803819536" className="underline">(780) 381-9536</a>.</p>
@@ -298,7 +330,7 @@ export default function HomePage() {
                 </div>
             </section>
 
-            {/* Testimonials — placeholder until real quotes collected */}
+            {/* Testimonials */}
             <section className="py-24 bg-charcoal-950 relative overflow-hidden">
                 <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[600px] rounded-full bg-hivis-500/5 blur-[150px]"></div>
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
