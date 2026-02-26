@@ -138,18 +138,18 @@ function FastTrackForm() {
                                 <div>
                                     <label className="block text-xs font-bold text-zinc-500 uppercase tracking-widest mb-2">Name / Company</label>
                                     <input required type="text" value={formData.name} onChange={e => setFormData({...formData, name: e.target.value})}
-                                        className="w-full bg-charcoal-900 border border-charcoal-800 text-white px-4 py-3 rounded focus:outline-none focus:border-hivis-500 transition-colors" placeholder="John Doe / Acme Corp" />
+                                        className="w-full bg-charcoal-900 border border-charcoal-800 text-white text-base px-4 py-3 rounded focus:outline-none focus:border-hivis-500 transition-colors" placeholder="John Doe / Acme Corp" />
                                 </div>
                                 <div>
                                     <label className="block text-xs font-bold text-zinc-500 uppercase tracking-widest mb-2">Phone Number</label>
                                     <input required type="tel" value={formData.phone} onChange={e => setFormData({...formData, phone: e.target.value})}
-                                        className="w-full bg-charcoal-900 border border-charcoal-800 text-white px-4 py-3 rounded focus:outline-none focus:border-hivis-500 transition-colors" placeholder="(780) 555-1234" />
+                                        className="w-full bg-charcoal-900 border border-charcoal-800 text-white text-base px-4 py-3 rounded focus:outline-none focus:border-hivis-500 transition-colors" placeholder="(780) 555-1234" />
                                 </div>
                             </div>
                             <div>
                                 <label className="block text-xs font-bold text-zinc-500 uppercase tracking-widest mb-2">What Broke &amp; Where</label>
                                 <textarea required rows={3} value={formData.description} onChange={e => setFormData({...formData, description: e.target.value})}
-                                    className="w-full bg-charcoal-900 border border-charcoal-800 text-white px-4 py-3 rounded focus:outline-none focus:border-hivis-500 transition-colors"
+                                    className="w-full bg-charcoal-900 border border-charcoal-800 text-white text-base px-4 py-3 rounded focus:outline-none focus:border-hivis-500 transition-colors"
                                     placeholder="E.g., Cracked boom on CAT 349. Located at Site C, Mildred Lake..."></textarea>
                             </div>
                             <motion.button whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} type="submit" disabled={status === 'sending'}
