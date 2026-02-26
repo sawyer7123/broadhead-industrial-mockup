@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { Shield, Truck, Phone, Wrench, ChevronRight, CheckCircle2, Clock, Zap, Target, UploadCloud } from 'lucide-react';
+import { Shield, Truck, Phone, Wrench, ChevronRight, CheckCircle2, Clock, Zap, Target, UploadCloud, Send } from 'lucide-react';
 import { motion, useScroll, useTransform, useInView, animate } from 'motion/react';
 
 const heavyTransition = { duration: 0.8, ease: [0.16, 1, 0.3, 1] };
@@ -54,12 +54,12 @@ function HeroSection() {
                     </div>
 
                     <h1 className="text-5xl sm:text-6xl md:text-8xl font-display font-black text-white uppercase leading-[0.85] tracking-tighter mb-6">
-                        Intuitive Welding <br className="hidden sm:block" />
-                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-hivis-400 to-hivis-500">Dynamic Results.</span>
+                        When Iron Breaks, <br className="hidden sm:block" />
+                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-hivis-400 to-hivis-500">We Fix It.</span>
                     </h1>
 
                     <p className="text-xl sm:text-2xl text-zinc-300 mb-10 max-w-2xl font-medium leading-snug border-l-4 border-hivis-500 pl-6">
-                        Mobile welding & heavy equipment repair for the Oil Sands. 100% aboriginally owned, fully certified, always on call.
+                        Mobile welding &amp; heavy equipment repair for the Oil Sands. 100% Indigenous-owned, CWB certified, on-site in hours — not days.
                     </p>
 
                     <div className="flex flex-col sm:flex-row gap-4">
@@ -71,9 +71,97 @@ function HeroSection() {
                         </motion.a>
                         <Link to="/contact"
                             className="inline-flex items-center justify-center px-8 py-5 font-bold text-white bg-charcoal-800/80 backdrop-blur rounded hover:bg-charcoal-700 transition-colors text-lg uppercase tracking-wide border border-charcoal-600 w-full sm:w-auto">
-                            <Target className="mr-3 w-5 h-5 text-hivis-500" /> Connect With Us
+                            <Target className="mr-3 w-5 h-5 text-hivis-500" /> Get a Quote
                         </Link>
                     </div>
+                </motion.div>
+            </div>
+        </section>
+    );
+}
+
+function FastTrackForm() {
+    const [formData, setFormData] = useState({ name: '', phone: '', description: '' });
+    const [status, setStatus] = useState('idle'); // idle | sending | success | error
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        setStatus('sending');
+        try {
+            const res = await fetch('https://api.emailjs.com/api/v1.0/email/send', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    service_id: 'service_broadhead',
+                    template_id: 'template_estimate',
+                    user_id: 'EMAILJS_PUBLIC_KEY',
+                    template_params: {
+                        from_name: formData.name,
+                        phone: formData.phone,
+                        description: formData.description,
+                        to_email: 'info@broadheadindustrial.ca',
+                    },
+                }),
+            });
+            if (res.ok) {
+                setStatus('success');
+                setFormData({ name: '', phone: '', description: '' });
+            } else {
+                setStatus('error');
+            }
+        } catch {
+            setStatus('error');
+        }
+    };
+
+    return (
+        <section id="estimate" className="py-24 bg-charcoal-900 border-y border-charcoal-800 relative">
+            <div className="absolute inset-0 bg-stripes opacity-5"></div>
+            <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+                <motion.div initial={{ opacity: 0, scale: 0.95 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} transition={heavyTransition}
+                    className="bg-charcoal-950 border border-charcoal-800 p-8 md:p-12 shadow-2xl relative overflow-hidden rounded">
+                    <div className="absolute top-0 right-0 w-16 h-16 bg-hivis-500" style={{ clipPath: 'polygon(100% 0, 0 0, 100% 100%)' }}></div>
+                    <div className="text-center mb-10">
+                        <h2 className="text-3xl md:text-4xl font-display font-black text-white uppercase tracking-tighter mb-4">Fast-Track <span className="text-hivis-500">Estimate</span></h2>
+                        <p className="text-zinc-400 font-medium">Tell us what broke and where. Our lead tech will assess and call you back — usually within the hour.</p>
+                    </div>
+
+                    {status === 'success' ? (
+                        <div className="text-center py-10">
+                            <CheckCircle2 className="w-16 h-16 text-hivis-500 mx-auto mb-4" />
+                            <h3 className="text-2xl font-display font-black text-white uppercase mb-2">Got It — We'll Call You Back</h3>
+                            <p className="text-zinc-400">Expect to hear from our lead tech within the hour. For urgent breakdowns, call us directly at <a href="tel:7803819536" className="text-hivis-500 font-bold">(780) 381-9536</a>.</p>
+                        </div>
+                    ) : (
+                        <form className="space-y-6" onSubmit={handleSubmit}>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div>
+                                    <label className="block text-xs font-bold text-zinc-500 uppercase tracking-widest mb-2">Name / Company</label>
+                                    <input required type="text" value={formData.name} onChange={e => setFormData({...formData, name: e.target.value})}
+                                        className="w-full bg-charcoal-900 border border-charcoal-800 text-white px-4 py-3 rounded focus:outline-none focus:border-hivis-500 transition-colors" placeholder="John Doe / Acme Corp" />
+                                </div>
+                                <div>
+                                    <label className="block text-xs font-bold text-zinc-500 uppercase tracking-widest mb-2">Phone Number</label>
+                                    <input required type="tel" value={formData.phone} onChange={e => setFormData({...formData, phone: e.target.value})}
+                                        className="w-full bg-charcoal-900 border border-charcoal-800 text-white px-4 py-3 rounded focus:outline-none focus:border-hivis-500 transition-colors" placeholder="(780) 555-1234" />
+                                </div>
+                            </div>
+                            <div>
+                                <label className="block text-xs font-bold text-zinc-500 uppercase tracking-widest mb-2">What Broke &amp; Where</label>
+                                <textarea required rows={3} value={formData.description} onChange={e => setFormData({...formData, description: e.target.value})}
+                                    className="w-full bg-charcoal-900 border border-charcoal-800 text-white px-4 py-3 rounded focus:outline-none focus:border-hivis-500 transition-colors"
+                                    placeholder="E.g., Cracked boom on CAT 349. Located at Site C, Mildred Lake..."></textarea>
+                            </div>
+                            <motion.button whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} type="submit" disabled={status === 'sending'}
+                                className="w-full py-5 font-black text-charcoal-950 bg-hivis-500 hover:bg-hivis-400 transition-colors text-xl uppercase tracking-wide flex items-center justify-center gap-2 rounded disabled:opacity-60">
+                                <Target className="w-6 h-6" />
+                                {status === 'sending' ? 'Sending...' : 'Submit for Immediate Review'}
+                            </motion.button>
+                            {status === 'error' && (
+                                <p className="text-center text-red-400 font-medium text-sm">Something went wrong. Call us directly at <a href="tel:7803819536" className="underline">(780) 381-9536</a>.</p>
+                            )}
+                        </form>
+                    )}
                 </motion.div>
             </div>
         </section>
@@ -91,7 +179,7 @@ export default function HomePage() {
                 <div className="absolute inset-0 bg-stripes opacity-10"></div>
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
                     <div className="text-center mb-6">
-                        <span className="text-xs font-bold text-zinc-500 uppercase tracking-[0.2em]">Trusted & Accredited</span>
+                        <span className="text-xs font-bold text-zinc-500 uppercase tracking-[0.2em]">Trusted &amp; Accredited</span>
                     </div>
                     <div className="flex flex-wrap justify-center items-center gap-8 md:gap-14">
                         {[
@@ -133,11 +221,10 @@ export default function HomePage() {
                         </h3>
                     </motion.div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         {[
-                            { title: "Rig Welding", desc: "From plant repairs to structural steel fabrication – our fully equipped rigs bring top-quality welding to even the most remote locations.", icon: Zap, link: '/services#rig-welding' },
-                            { title: "Heavy Equipment Repair", desc: "Minimize downtime with rapid response heavy equipment repair. We have the capacity and experience to get your iron moving again.", icon: Truck, link: '/services#heavy-equipment' },
-                            { title: "Innovative Solutions", desc: "Beyond welding — digital tech installations, equipment monitoring, and custom solutions to keep your operations cutting edge.", icon: Target, link: '/services#innovative-solutions' },
+                            { title: "Rig Welding", desc: "CWB-certified welders. B-Pressure pipe. Structural steel. We bring fully equipped rigs to your site — remote camps, plant shutdowns, emergency breakdowns.", icon: Zap, link: '/services#rig-welding' },
+                            { title: "Heavy Equipment Repair", desc: "Excavator booms, bucket relines, frame cracks, undercarriage. Rapid response to minimize downtime — because a machine sitting still is money bleeding out.", icon: Truck, link: '/services#heavy-equipment' },
                         ].map((service, idx) => (
                             <motion.div key={idx} initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
                                 transition={{ ...heavyTransition, delay: idx * 0.1 }} whileHover={{ y: -8, scale: 1.01 }}
@@ -164,10 +251,10 @@ export default function HomePage() {
                         className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
                         <div>
                             <h2 className="text-sm font-bold text-hivis-500 uppercase tracking-[0.2em] mb-4 flex items-center gap-2"><span className="w-8 h-px bg-hivis-500"></span> Mobility</h2>
-                            <h3 className="text-4xl md:text-5xl font-display font-black text-white uppercase tracking-tighter">Rig & <span className="text-steel-400">Gear.</span></h3>
+                            <h3 className="text-4xl md:text-5xl font-display font-black text-white uppercase tracking-tighter">Rig &amp; <span className="text-steel-400">Gear.</span></h3>
                         </div>
                         <p className="text-zinc-300 max-w-md text-lg font-medium border-l-2 border-hivis-500 pl-4">
-                            Our fleet is fully mobilized. No matter where your site is located in the Fort McMurray area, our fully equipped trucks provide top-notch service.
+                            Fully mobilized and ready to roll. No matter where your site is in Northern Alberta, our equipped trucks get there — and get it done.
                         </p>
                     </motion.div>
 
@@ -180,7 +267,7 @@ export default function HomePage() {
                             <div className="absolute inset-0 bg-gradient-to-t from-charcoal-950 via-charcoal-950/60 to-transparent"></div>
                             <div className="absolute bottom-0 left-0 p-8 w-full z-10">
                                 <div className="inline-block px-3 py-1 bg-hivis-500 text-charcoal-950 font-bold text-xs uppercase tracking-widest mb-3 shadow-[0_0_10px_rgba(234,179,8,0.5)]">Fully Mobile</div>
-                                <h4 className="text-3xl font-display font-black text-white uppercase">Welding Rigs & Fleet</h4>
+                                <h4 className="text-3xl font-display font-black text-white uppercase">Welding Rigs &amp; Fleet</h4>
                                 <p className="text-zinc-200 mt-2 max-w-md font-medium">Equipped to handle remote locations, camps, and challenging environments.</p>
                             </div>
                         </motion.div>
@@ -209,84 +296,38 @@ export default function HomePage() {
                 </div>
             </section>
 
-            {/* Testimonials */}
+            {/* Testimonials — placeholder until real quotes collected */}
             <section className="py-24 bg-charcoal-950 relative overflow-hidden">
                 <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[600px] rounded-full bg-hivis-500/5 blur-[150px]"></div>
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
                     <motion.div initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={heavyTransition} className="text-center mb-16">
-                        <h2 className="text-sm font-bold text-hivis-500 uppercase tracking-[0.2em] mb-4">What Clients Say</h2>
+                        <h2 className="text-sm font-bold text-hivis-500 uppercase tracking-[0.2em] mb-4">In The Field</h2>
                         <h3 className="text-4xl md:text-5xl font-display font-black text-white uppercase tracking-tighter">
-                            Trusted by <span className="text-steel-400">Industry Leaders.</span>
+                            Results That <span className="text-steel-400">Speak.</span>
                         </h3>
                     </motion.div>
-
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                        {[
-                            { quote: "Broadhead had a crew on-site within 4 hours of our call. The boom was welded, UT tested, and back in production by the next shift. That kind of response time is unheard of.", name: "Site Superintendent", company: "Major Oil Sands Operator", stars: 5 },
-                            { quote: "We've used Broadhead for three consecutive turnarounds now. Their CWB-certified welders consistently deliver clean work that passes NDE every time. No callbacks, no rework.", name: "Maintenance Manager", company: "Northern Alberta Plant", stars: 5 },
-                            { quote: "What sets Broadhead apart is their communication. From the initial assessment to final sign-off, we always knew exactly where the project stood. Professional crew, quality results.", name: "Project Coordinator", company: "Heavy Civil Contractor", stars: 5 },
-                        ].map((t, i) => (
-                            <motion.div
-                                key={i}
-                                initial={{ opacity: 0, y: 40 }}
-                                whileInView={{ opacity: 1, y: 0 }}
-                                viewport={{ once: true }}
-                                transition={{ ...heavyTransition, delay: i * 0.15 }}
-                                whileHover={{ y: -5 }}
-                                className="bg-charcoal-900 border border-charcoal-800 p-8 rounded relative group"
-                            >
-                                <div className="absolute top-6 right-6 text-6xl font-display font-black text-charcoal-800 leading-none select-none group-hover:text-charcoal-700 transition-colors">"</div>
-                                <div className="flex gap-1 mb-4">
-                                    {Array.from({ length: t.stars }).map((_, j) => (
-                                        <svg key={j} className="w-5 h-5 text-hivis-500 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
-                                    ))}
-                                </div>
-                                <p className="text-zinc-300 font-medium leading-relaxed mb-6 relative z-10">"{t.quote}"</p>
-                                <div className="border-t border-charcoal-800 pt-4">
-                                    <div className="text-white font-bold text-sm">{t.name}</div>
-                                    <div className="text-hivis-500 text-xs font-bold uppercase tracking-wider">{t.company}</div>
-                                </div>
-                            </motion.div>
-                        ))}
-                    </div>
-                </div>
-            </section>
-
-            {/* Fast Track Estimate */}
-            <section id="estimate" className="py-24 bg-charcoal-900 border-y border-charcoal-800 relative">
-                <div className="absolute inset-0 bg-stripes opacity-5"></div>
-                <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-                    <motion.div initial={{ opacity: 0, scale: 0.95 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} transition={heavyTransition}
-                        className="bg-charcoal-950 border border-charcoal-800 p-8 md:p-12 shadow-2xl relative overflow-hidden rounded">
-                        <div className="absolute top-0 right-0 w-16 h-16 bg-hivis-500" style={{ clipPath: 'polygon(100% 0, 0 0, 100% 100%)' }}></div>
-                        <div className="text-center mb-10">
-                            <h2 className="text-3xl md:text-4xl font-display font-black text-white uppercase tracking-tighter mb-4">Fast-Track <span className="text-hivis-500">Estimate</span></h2>
-                            <p className="text-zinc-400 font-medium">Don't waste time explaining the break. Snap a photo from your phone, upload it here, and our lead tech will assess the damage immediately.</p>
+                    <motion.div initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={heavyTransition}
+                        className="max-w-3xl mx-auto bg-charcoal-900 border border-charcoal-800 p-10 md:p-14 rounded text-center">
+                        <div className="text-7xl font-display font-black text-charcoal-800 leading-none mb-6 select-none">"</div>
+                        <p className="text-2xl text-zinc-200 font-medium leading-relaxed mb-8 italic">
+                            We had a boom crack on a CAT 349 at 11 PM on a Thursday. Broadhead had a welder on-site by 2 AM, UT tested and cleared by morning shift. That's the kind of response that keeps a project on schedule.
+                        </p>
+                        <div className="border-t border-charcoal-800 pt-6">
+                            <div className="text-white font-bold">Site Superintendent</div>
+                            <div className="text-hivis-500 text-sm font-bold uppercase tracking-wider mt-1">Major Oil Sands Operator — Fort McMurray, AB</div>
                         </div>
-                        <form className="space-y-6" onSubmit={(e) => e.preventDefault()}>
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <div><label className="block text-xs font-bold text-zinc-500 uppercase tracking-widest mb-2">Name / Company</label><input type="text" className="w-full bg-charcoal-900 border border-charcoal-800 text-white px-4 py-3 rounded focus:outline-none focus:border-hivis-500 transition-colors" placeholder="John Doe / Acme Corp" /></div>
-                                <div><label className="block text-xs font-bold text-zinc-500 uppercase tracking-widest mb-2">Phone Number</label><input type="tel" className="w-full bg-charcoal-900 border border-charcoal-800 text-white px-4 py-3 rounded focus:outline-none focus:border-hivis-500 transition-colors" placeholder="(555) 123-4567" /></div>
-                            </div>
-                            <div>
-                                <label className="block text-xs font-bold text-zinc-500 uppercase tracking-widest mb-2">Upload Photo of Damage</label>
-                                <div className="border-2 border-dashed border-charcoal-700 hover:border-hivis-500 bg-charcoal-900/50 p-10 text-center cursor-pointer transition-colors group rounded">
-                                    <UploadCloud className="w-12 h-12 text-steel-500 mx-auto mb-4 group-hover:text-hivis-500 transition-colors" />
-                                    <p className="text-white font-bold text-lg mb-1">Tap to Upload or Drag & Drop</p>
-                                    <p className="text-zinc-500 text-sm">Supports JPG, PNG from mobile camera</p>
-                                </div>
-                            </div>
-                            <div><label className="block text-xs font-bold text-zinc-500 uppercase tracking-widest mb-2">Brief Description / Location</label>
-                                <textarea rows={3} className="w-full bg-charcoal-900 border border-charcoal-800 text-white px-4 py-3 rounded focus:outline-none focus:border-hivis-500 transition-colors" placeholder="E.g., Cracked boom on CAT 349. Located at Site C..."></textarea>
-                            </div>
-                            <motion.button whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} type="submit"
-                                className="w-full py-5 font-black text-charcoal-950 bg-hivis-500 hover:bg-hivis-400 transition-colors text-xl uppercase tracking-wide flex items-center justify-center gap-2 rounded">
-                                <Target className="w-6 h-6" /> Submit for Immediate Review
-                            </motion.button>
-                        </form>
+                    </motion.div>
+                    <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ ...heavyTransition, delay: 0.2 }}
+                        className="text-center mt-12">
+                        <p className="text-zinc-500 font-medium mb-4">Work with us? We'd love to share your story.</p>
+                        <a href="mailto:info@broadheadindustrial.ca" className="inline-flex items-center gap-2 text-hivis-500 font-bold uppercase text-sm tracking-wider hover:text-hivis-400 transition-colors">
+                            <Send className="w-4 h-4" /> Submit a Testimonial
+                        </a>
                     </motion.div>
                 </div>
             </section>
+
+            <FastTrackForm />
         </div>
     );
 }
