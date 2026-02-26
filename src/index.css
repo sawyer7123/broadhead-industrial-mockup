@@ -1,0 +1,224 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;700;900&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --color-charcoal-950: #0a0a0b;
+  --color-charcoal-900: #18181b;
+  --color-charcoal-800: #27272a;
+  --color-charcoal-700: #3f3f46;
+
+  --color-hivis-400: #facc15;
+  --color-hivis-500: #eab308;
+
+  --color-steel-500: #64748b;
+  --color-steel-600: #475569;
+  --color-steel-800: #1e293b;
+
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
+}
+
+@layer base {
+  body {
+    background-color: var(--color-charcoal-950);
+    color: #f8fafc;
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+/* Base custom interactive elements */
+.metallic-btn {
+  background: linear-gradient(to bottom, #333, #151515);
+  border: 1px solid #444;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 4px 6px rgba(0, 0, 0, 0.5);
+  transition: all 0.2s;
+}
+
+.metallic-btn:hover {
+  background: linear-gradient(to bottom, #444, #222);
+  border-color: #555;
+}
+
+.metallic-btn:active {
+  background: #111;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+/* Industrial Grit Texture */
+.bg-grit {
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.04'/%3E%3C/svg%3E");
+}
+
+/* Brushed Metal Texture */
+.bg-brushed {
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.0) 20%, rgba(255, 255, 255, 0.03) 40%, rgba(255, 255, 255, 0.0) 60%, rgba(255, 255, 255, 0.03) 80%, rgba(255, 255, 255, 0.0) 100%);
+  background-size: 10px 100%;
+}
+
+/* Diagonal Warning Stripes */
+.bg-stripes {
+  background-image: repeating-linear-gradient(-45deg,
+      transparent,
+      transparent 10px,
+      rgba(0, 0, 0, 0.2) 10px,
+      rgba(0, 0, 0, 0.2) 20px);
+}
+
+/* Molten Glow Border */
+.molten-border {
+  position: relative;
+  z-index: 1;
+}
+
+.molten-border::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  background: linear-gradient(90deg, rgba(234, 179, 8, 0), rgba(234, 179, 8, 0.6), rgba(250, 204, 21, 1), rgba(234, 179, 8, 0.6), rgba(234, 179, 8, 0));
+  background-size: 200% 100%;
+  animation: molten 2.5s linear infinite;
+  z-index: -1;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  border-radius: inherit;
+}
+
+.molten-border:hover::before {
+  opacity: 1;
+}
+
+@keyframes molten {
+  0% {
+    background-position: 200% 0;
+  }
+
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+/* Diamond Plate Pattern */
+.bg-diamond {
+  background-image: radial-gradient(#475569 1px, transparent 1px), radial-gradient(#475569 1px, transparent 1px);
+  background-size: 20px 20px;
+  background-position: 0 0, 10px 10px;
+}
+
+/* ── Premium Polish ────────────────────────────── */
+
+/* Smooth scroll */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Custom selection color */
+::selection {
+  background-color: rgba(234, 179, 8, 0.3);
+  color: white;
+}
+
+/* Focus rings for accessibility */
+:focus-visible {
+  outline: 2px solid var(--color-hivis-500);
+  outline-offset: 2px;
+}
+
+/* Input focus glow */
+input:focus,
+textarea:focus,
+select:focus {
+  box-shadow: 0 0 0 3px rgba(234, 179, 8, 0.15);
+}
+
+/* Image hover reveal overlay */
+.img-reveal {
+  position: relative;
+  overflow: hidden;
+}
+
+.img-reveal::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(234, 179, 8, 0.1) 0%, transparent 60%);
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+.img-reveal:hover::after {
+  opacity: 1;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-charcoal-950);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-charcoal-700);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-charcoal-800);
+}
+
+/* Section divider gradient line */
+.section-divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--color-hivis-500), transparent);
+  opacity: 0.3;
+}
+
+/* Animated underline for nav links */
+.nav-underline {
+  position: relative;
+}
+
+.nav-underline::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: var(--color-hivis-500);
+  transition: width 0.3s ease;
+}
+
+.nav-underline:hover::after,
+.nav-underline.active::after {
+  width: 100%;
+}
+
+/* Glow effect for CTA buttons */
+.glow-btn {
+  position: relative;
+}
+
+.glow-btn::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  background: linear-gradient(135deg, rgba(234, 179, 8, 0.4), rgba(250, 204, 21, 0.2), rgba(234, 179, 8, 0.4));
+  border-radius: inherit;
+  filter: blur(8px);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  z-index: -1;
+}
+
+.glow-btn:hover::before {
+  opacity: 1;
+}
+
+/* Subtle text shadow for hero headings */
+.hero-text-shadow {
+  text-shadow: 0 2px 20px rgba(0, 0, 0, 0.5);
+}
