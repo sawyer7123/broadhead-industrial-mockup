@@ -126,10 +126,10 @@ export default function AboutPage() {
                                 viewport={{ once: true }}
                                 transition={{ ...heavyTransition, delay: i * 0.1 }}
                                 whileHover={{ y: -5, scale: 1.05 }}
-                                className="bg-charcoal-900 border border-charcoal-800 p-6 text-center cursor-pointer rounded flex flex-col items-center gap-4"
+                                className="bg-charcoal-900 border border-charcoal-800 p-4 sm:p-6 text-center cursor-pointer rounded flex flex-col items-center gap-3"
                             >
                                 <img src={cert.src} alt={cert.label} className="h-16 w-auto object-contain" />
-                                <div className="text-xs font-bold text-zinc-400 uppercase tracking-wider">{cert.label}</div>
+                                <div className="text-[10px] sm:text-xs font-bold text-zinc-400 uppercase tracking-wider text-center leading-tight">{cert.label}</div>
                             </motion.div>
                         ))}
                     </div>
