@@ -12,22 +12,16 @@ export default function ContactPage() {
         e.preventDefault();
         setStatus('sending');
         try {
-            const res = await fetch('https://api.emailjs.com/api/v1.0/email/send', {
+            const res = await fetch('https://formspree.io/f/xkoveeng', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    service_id: 'service_broadhead',
-                    template_id: 'template_contact',
-                    user_id: 'EMAILJS_PUBLIC_KEY',
-                    template_params: {
-                        from_name: formData.name,
-                        company: formData.company,
-                        reply_to: formData.email,
-                        phone: formData.phone,
-                        service: formData.service,
-                        message: formData.message,
-                        to_email: 'info@broadheadindustrial.ca',
-                    },
+                    name: formData.name,
+                    company: formData.company,
+                    email: formData.email,
+                    phone: formData.phone,
+                    service: formData.service,
+                    message: formData.message,
                 }),
             });
             if (res.ok) {

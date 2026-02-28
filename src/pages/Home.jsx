@@ -89,19 +89,13 @@ function FastTrackForm() {
         e.preventDefault();
         setStatus('sending');
         try {
-            const res = await fetch('https://api.emailjs.com/api/v1.0/email/send', {
+            const res = await fetch('https://formspree.io/f/xwvnzzkl', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    service_id: 'service_broadhead',
-                    template_id: 'template_estimate',
-                    user_id: 'EMAILJS_PUBLIC_KEY',
-                    template_params: {
-                        from_name: formData.name,
-                        phone: formData.phone,
-                        description: formData.description,
-                        to_email: 'info@broadheadindustrial.ca',
-                    },
+                    name: formData.name,
+                    phone: formData.phone,
+                    description: formData.description,
                 }),
             });
             if (res.ok) {

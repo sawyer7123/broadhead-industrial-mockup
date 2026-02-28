@@ -1,10 +1,41 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { motion } from 'motion/react';
-import { Users, MapPin, Upload, ChevronRight, Shield, Wrench, Clock, Heart } from 'lucide-react';
+import { Users, MapPin, Upload, ChevronRight, Shield, Wrench, Clock, Heart, CheckCircle2 } from 'lucide-react';
 
 const heavyTransition = { duration: 0.8, ease: [0.16, 1, 0.3, 1] };
 
 export default function CareersPage() {
+    const [formData, setFormData] = useState({ name: '', phone: '', email: '', position: 'Journeyman Welder', notes: '' });
+    const [status, setStatus] = useState('idle');
+
+    const set = (field) => (e) => setFormData({ ...formData, [field]: e.target.value });
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        setStatus('sending');
+        try {
+            const res = await fetch('https://formspree.io/f/xreaddgq', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    name: formData.name,
+                    phone: formData.phone,
+                    email: formData.email,
+                    position: formData.position,
+                    notes: formData.notes,
+                }),
+            });
+            if (res.ok) {
+                setStatus('success');
+                setFormData({ name: '', phone: '', email: '', position: 'Journeyman Welder', notes: '' });
+            } else {
+                setStatus('error');
+            }
+        } catch {
+            setStatus('error');
+        }
+    };
+
     return (
         <div className="pt-20">
             <section className="relative py-24 lg:py-32 overflow-hidden border-b border-charcoal-800">
@@ -84,26 +115,33 @@ export default function CareersPage() {
                             </p>
                         </div>
 
-                        <form className="space-y-6" onSubmit={(e) => e.preventDefault()}>
+                        {status === 'success' ? (
+                            <div className="text-center py-16">
+                                <CheckCircle2 className="w-16 h-16 text-hivis-500 mx-auto mb-4" />
+                                <h3 className="text-2xl font-display font-black text-white uppercase mb-2">Application Received</h3>
+                                <p className="text-zinc-400">We'll review your application and get back to you within 48 hours. For urgent inquiries, call us at <a href="tel:7803819536" className="text-hivis-500 font-bold">(780) 381-9536</a>.</p>
+                            </div>
+                        ) : (
+                        <form className="space-y-6" onSubmit={handleSubmit}>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <div>
                                     <label className="block text-xs font-bold text-zinc-500 uppercase tracking-widest mb-2">Full Name</label>
-                                    <input type="text" className="w-full bg-charcoal-900 border border-charcoal-800 text-white px-4 py-3 rounded focus:outline-none focus:border-hivis-500 transition-colors" placeholder="John Doe" />
+                                    <input required type="text" value={formData.name} onChange={set('name')} className="w-full bg-charcoal-900 border border-charcoal-800 text-white px-4 py-3 rounded focus:outline-none focus:border-hivis-500 transition-colors" placeholder="John Doe" />
                                 </div>
                                 <div>
                                     <label className="block text-xs font-bold text-zinc-500 uppercase tracking-widest mb-2">Phone Number</label>
-                                    <input type="tel" className="w-full bg-charcoal-900 border border-charcoal-800 text-white px-4 py-3 rounded focus:outline-none focus:border-hivis-500 transition-colors" placeholder="(780) 555-1234" />
+                                    <input required type="tel" value={formData.phone} onChange={set('phone')} className="w-full bg-charcoal-900 border border-charcoal-800 text-white px-4 py-3 rounded focus:outline-none focus:border-hivis-500 transition-colors" placeholder="(780) 555-1234" />
                                 </div>
                             </div>
 
                             <div>
                                 <label className="block text-xs font-bold text-zinc-500 uppercase tracking-widest mb-2">Email</label>
-                                <input type="email" className="w-full bg-charcoal-900 border border-charcoal-800 text-white px-4 py-3 rounded focus:outline-none focus:border-hivis-500 transition-colors" placeholder="john@example.com" />
+                                <input required type="email" value={formData.email} onChange={set('email')} className="w-full bg-charcoal-900 border border-charcoal-800 text-white px-4 py-3 rounded focus:outline-none focus:border-hivis-500 transition-colors" placeholder="john@example.com" />
                             </div>
 
                             <div>
                                 <label className="block text-xs font-bold text-zinc-500 uppercase tracking-widest mb-2">Position Interested In</label>
-                                <select className="w-full bg-charcoal-900 border border-charcoal-800 text-white px-4 py-3 rounded focus:outline-none focus:border-hivis-500 transition-colors">
+                                <select value={formData.position} onChange={set('position')} className="w-full bg-charcoal-900 border border-charcoal-800 text-white px-4 py-3 rounded focus:outline-none focus:border-hivis-500 transition-colors">
                                     <option>Journeyman Welder</option>
                                     <option>Heavy Equipment Mechanic</option>
                                     <option>Apprentice Welder</option>
@@ -117,25 +155,30 @@ export default function CareersPage() {
                                 <div className="border-2 border-dashed border-charcoal-700 hover:border-hivis-500 bg-charcoal-900/50 p-8 text-center cursor-pointer transition-colors group rounded">
                                     <Upload className="w-10 h-10 text-steel-500 mx-auto mb-3 group-hover:text-hivis-500 transition-colors" />
                                     <p className="text-white font-bold mb-1">Tap to Upload or Drag & Drop</p>
-                                    <p className="text-zinc-500 text-sm">PDF, DOC, JPG, PNG</p>
+                                    <p className="text-zinc-500 text-sm">PDF, DOC, JPG, PNG — email directly to <span className="text-hivis-500">info@broadheadindustrial.ca</span></p>
                                 </div>
                             </div>
 
                             <div>
                                 <label className="block text-xs font-bold text-zinc-500 uppercase tracking-widest mb-2">Additional Notes</label>
-                                <textarea rows={3} className="w-full bg-charcoal-900 border border-charcoal-800 text-white px-4 py-3 rounded focus:outline-none focus:border-hivis-500 transition-colors" placeholder="Certifications, experience, availability..."></textarea>
+                                <textarea rows={3} value={formData.notes} onChange={set('notes')} className="w-full bg-charcoal-900 border border-charcoal-800 text-white px-4 py-3 rounded focus:outline-none focus:border-hivis-500 transition-colors" placeholder="Certifications, experience, availability..."></textarea>
                             </div>
 
                             <motion.button
                                 whileHover={{ scale: 1.02 }}
                                 whileTap={{ scale: 0.98 }}
                                 type="submit"
-                                className="w-full py-5 font-black text-charcoal-950 bg-hivis-500 hover:bg-hivis-400 transition-colors text-xl uppercase tracking-wide flex items-center justify-center gap-2 rounded"
+                                disabled={status === 'sending'}
+                                className="w-full py-5 font-black text-charcoal-950 bg-hivis-500 hover:bg-hivis-400 transition-colors text-xl uppercase tracking-wide flex items-center justify-center gap-2 rounded disabled:opacity-60"
                             >
                                 <Users className="w-6 h-6" />
-                                Submit Application
+                                {status === 'sending' ? 'Submitting...' : 'Submit Application'}
                             </motion.button>
+                            {status === 'error' && (
+                                <p className="text-center text-red-400 font-medium text-sm">Something went wrong. Email us directly at <a href="mailto:info@broadheadindustrial.ca" className="underline">info@broadheadindustrial.ca</a>.</p>
+                            )}
                         </form>
+                        )}
                     </motion.div>
                 </div>
             </section>
